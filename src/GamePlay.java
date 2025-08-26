@@ -1,8 +1,12 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GamePlay {
     //initialize
+    public static ArrayList<NPC> NPCs = new ArrayList<NPC>();
+
     public static Town town = new Town();
+    public static NPC Ford = new NPC("Ford", "Tavern", "Acquaintance");
 
     //Game state vars
     public static boolean inTown;//MAIN
@@ -12,6 +16,9 @@ public class GamePlay {
     public static boolean inFoodShop;//child to town
 
     public static boolean inDungeon;//MAIN
+
+    //NPC's
+    public static boolean charWilliamUnlock;
 
 
     /**
@@ -56,12 +63,35 @@ public class GamePlay {
 
     public static void see()
     {
+        ArrayList<NPC> npcShown = new ArrayList<NPC>();
+        if (inTavern)
+        {
+            //base
+            System.out.println("\nTavern");
+            System.out.println("-------------------");
+            System.out.println("Name---Relashionship\n");
 
+            for(NPC npc : NPCs)
+            {
+                if(npc.location.equalsIgnoreCase("tavern"))
+                {
+                    npcShown.add(npc);
+                }
+            }
+
+            for(NPC npc : npcShown)
+            {
+                System.out.println(npc.name + "     " + npc.relashionship);
+            }
+        }
     }
 
 
     public void start() throws InterruptedException
     {
+        //add ford right quick...
+        NPCs.add(Ford);
+
         Scanner scan = new Scanner(System.in);
 
         String input;
@@ -90,17 +120,18 @@ public class GamePlay {
         dialogue("You: \"If that’s true, he’ll regret waiting for me.\"");
 
         inTown = true;
+        inTavern = true;
 
         //tut before freedom XD
-        System.out.println("\nYou get out of bed and head down the tavern’s stairs. Type 'C' to list the people around you.");
+        System.out.println("\nYou get out of bed and head down the tavern’s stairs. Type 'S' to list the people around you.");
         input = scan.nextLine();
-        if(input.equalsIgnoreCase("c"));
+        if(input.equalsIgnoreCase("s"))
         {
             see();
         }
         System.out.println("Type 'M' to see your map");
         input = scan.nextLine();
-        if(input.equalsIgnoreCase("m"));
+        if(input.equalsIgnoreCase("m"))
         {
             Map();
         }
