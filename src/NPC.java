@@ -1,18 +1,18 @@
 public class NPC {
     String name;
     String location;
-    String relashionship;
+    String relationship;
 
-    public NPC(String name, String location, String relashionship)
+    public NPC(String name, String location, String relationship)
     {
         this.name = name;
         this.location = location;
-        this.relashionship = relashionship;
+        this.relationship = relationship;
     }
 
-    public void updateRelashionship(String updatedRelashionship)
+    public void updateRelashionship(String updatedRelationship)
     {
-        relashionship = updatedRelashionship;
+        relationship = updatedRelationship;
     }
 
     public void updateLocation(String updatedLocation)
@@ -32,6 +32,6 @@ public class NPC {
 
     public String getRelashionship()
     {
-        return relashionship;
+        return relationship;
     }
 }
