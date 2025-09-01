@@ -20,40 +20,47 @@ public class App {
         System.out.println("--------");
         System.out.println("Or type \"Start\" to start fresh.");
 
-        if (input.hasNextInt())
+        while(true)
         {
-            int savePicked = input.nextInt();
-            if (savePicked > 3 || savePicked < 1)
+            if (input.hasNextInt())
             {
-                System.out.println("Please enter 1, 2 or 3");
-            }
-            else
-            {
-                switch (savePicked) 
+                int savePicked = input.nextInt();
+                if (savePicked > 3 || savePicked < 1)
                 {
-                    case 1:
+                    System.out.println("Please enter 1, 2 or 3");
+                }
+                else
+                {
+                    switch (savePicked) 
+                    {
+                        case 1:
 
-                        break;
-                
-                    case 2:
+                            break;
+                    
+                        case 2:
 
-                        break;
+                            break;
 
-                    case 3:
+                        case 3:
 
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-        }
-        else if(input.hasNext())
-        {
-            String userString = input.nextLine();
-            if(userString.equalsIgnoreCase("start"))
+            else if(input.hasNext())
             {
-                GamePlay fresh = new GamePlay();
-                fresh.tutorial();
+                String userString = input.nextLine();
+                if(userString.equalsIgnoreCase("start"))
+                {
+                    GamePlay fresh = new GamePlay();
+                    fresh.tutorial();
+                }
+                else 
+                {
+                    System.out.println("Please enter a valid command");
+                }
             }
         }
     }

@@ -18,9 +18,7 @@ public class GamePlay {
     public static boolean inTown;//MAIN
     public static boolean outside;//child to town
     public static boolean inTavern;//child to town
-    public static boolean inMenu;//child to tavern
     public static boolean inWeaponShop;//child to town
-    public static boolean inFoodShop;//child to town
 
     public static boolean inDungeon;//MAIN
 
@@ -121,6 +119,9 @@ public class GamePlay {
 
     public void inventory()
     {
+        Scanner scan = new Scanner(System.in);
+        String input;
+
         clearScreen();
         System.out.println(YELLOW + "¥" + player.Money + RESET);
         System.out.println(RED + "HP: " + player.HP + "/" + player.MaxHP + RESET);
@@ -129,8 +130,30 @@ public class GamePlay {
 
         for(int i = 0; i < player.inventory.size(); i++)
         {
+            Item item = player.inventory.get(i);
             int printNum = i + 1;
-            System.out.println(printNum + ":" + player.inventory.get(i).itemName + " |lvl: " + player.inventory.get(i).lvl);
+
+            if(item instanceof Food)
+            {
+                Food food = (Food) item;
+                System.out.println(printNum + ":" + food.itemName + " |lvl: " + food.lvl + "|+HP: " + food.HP + "||*type " + printNum + " to eat*");
+            }
+        }
+
+        System.out.println(BLUE + "\n'back': go back" + RESET);
+
+        while(true)
+        {
+            input = scan.nextLine();
+            if(input.equalsIgnoreCase("back"))
+            {
+                clearScreen();
+                return;
+            }
+            else
+            {
+                System.out.println(BLUE + "Please enter a valid command" + RESET);
+            }
         }
     }
 
@@ -152,9 +175,9 @@ public class GamePlay {
 
         clearScreen();
         System.out.println("------------------");
-        System.out.println("'1':" + BLUE + "Steak & Potatoes" + RESET + "(" + RED + "7+HP" + RESET + ")" + YELLOW + "¥10");
+        System.out.println("'1':" + BLUE + "Steak & Potatoes" + RESET + "(" + RED + "7+HP" + RESET + ")" + YELLOW + "¥10" + RESET);
 
-        System.out.println("'back': go back");
+        System.out.println(BLUE + "'back': go back" + RESET);
 
         while(true)
         {
@@ -176,8 +199,6 @@ public class GamePlay {
             }
         }
     }
-
-
 
 
     public void tutorial() throws InterruptedException
