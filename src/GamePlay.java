@@ -14,6 +14,7 @@ public class GamePlay {
     public static boolean inTown;//MAIN
     public static boolean outside;//child to town
     public static boolean inTavern;//child to town
+    public static boolean inMenu;//child to tavern
     public static boolean inWeaponShop;//child to town
     public static boolean inFoodShop;//child to town
 
@@ -26,6 +27,13 @@ public class GamePlay {
 
     //Player
     Player player = new Player(null);
+
+    //colors for terminal
+    public static final String RESET = "\u001b[0m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String RED = "\u001b[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
 
 
     /**
@@ -56,6 +64,7 @@ public class GamePlay {
     }
 
 
+    //CMDs
     public static void map()
     {
         clearScreen();
@@ -76,9 +85,9 @@ public class GamePlay {
         {
             //base
             clearScreen();
-            System.out.println("\nTavern");
+            System.out.println(GREEN + "\nTavern" + RESET);
             System.out.println("-------------------");
-            System.out.println("Name---Relationship\n");
+            System.out.println(BLUE + "Name---Relationship\n" + RESET);
 
             for(NPC npc : NPCs)
             {
@@ -99,12 +108,49 @@ public class GamePlay {
     {
         clearScreen();
         //basic stuff
-        System.out.println("Basic:\nm - map\nc - see\nls - cmd's");
+        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\nls - cmd's" + RESET);
         if(inTavern)//tavern only
         {
-            System.out.println("Tavern:\nsleep - get a room for the night(HP+70%) ¥45\nmenu - see the food menu");
+            System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night(" + RED + "HP+60%" + RESET + ")" + YELLOW + "¥45" + RESET + "\nmenu - see the food menu" + RESET);
         }
     }
+
+    public void inventory()
+    {
+        clearScreen();
+        System.out.println(YELLOW + "¥" + player.Money + RESET);
+        System.out.println(RED + player.HP + "/" + player.MaxHP + RESET);
+        System.out.println("-----------------");
+
+    }
+
+    public void menu()
+    {
+        Scanner scan = new Scanner(System.in);
+        String input;
+
+        clearScreen();
+        System.out.println("------------------");
+        System.out.println("'1':Steak & Potatoes " + YELLOW + "¥10");
+
+        System.out.println("'back': go back");
+
+        while(true)
+        {
+            input = scan.nextLine();
+            if(input.equalsIgnoreCase("1"))
+            {
+                player.setMoney(player.Money - 10);
+            }
+            else if(input.equalsIgnoreCase("back"))
+            {
+                clearScreen();
+                return;
+            }
+        }
+    }
+
+
 
 
     public void start() throws InterruptedException
@@ -115,58 +161,56 @@ public class GamePlay {
         Scanner scan = new Scanner(System.in);
         String input;
 
-        String red = "\u001b[31m";
-        String reset = "\u001b[0m";
 
 
         clearScreen();
-        dialogue("*BOOOM*");
-        dialogue("Ford: \"..hey...Hey, traveler, wake up!\"");
-        dialogue("You: \"...wha—?\"");
-        dialogue("Ford: \"Did you feel that shake? The whole tavern rattled... it can only mean one thing.\"");
-        dialogue("You: \"...still half asleep here, Ford. What's going on?\"");
-        dialogue("Ford: \"Didn't you say you were trained under the king's knights?\"");
-        dialogue("You: \"Yes, I was. Why?\"");
-        dialogue("Ford: \"Then maybe you can handle this. They say" + red + " Dima's dungeon" + reset + " has risen again.\"");
-        dialogue("You: \"" + red + "Dima's dungeon?" + reset + " Never heard of it.\"");
-        dialogue("Ford: \"It's no ordinary place... Long ago, there was a warlord named Dima. Cruel, bloodthirsty—he carved his fortress deep beneath the earth. When the king's army finally brought him down, the ground swallowed the fortress whole.\"");
-        dialogue("You: \"And now it's... back?\"");
-        dialogue("Ford: \"Aye. Every few generations, the dungeon claws its way to the surface. Each time it does, plague and monsters spill from it, and villages vanish overnight.\"");
-        dialogue("You: \"...And you expect me to walk into that hell alone?\"");
-        dialogue("Ford: \"I wouldn't ask, but we've got no choice. If someone doesn't enter soon, the whole valley is finished.\"");
-        dialogue("You: \"...Then I'll go, Ford. I'll see this dungeon with my own eyes.\"");
-        dialogue("Ford: \"Thank the gods. Just be careful... Dima is still down there waiting....\"");
-        dialogue("You: \"If that's true, he'll regret waiting for me.\"");
+        // dialogue("*BOOOM*");
+        // dialogue("Ford: \"..hey...Hey, traveler, wake up!\"");
+        // dialogue("You: \"...wha—?\"");
+        // dialogue("Ford: \"Did you feel that shake? The whole tavern rattled... it can only mean one thing.\"");
+        // dialogue("You: \"...still half asleep here, Ford. What's going on?\"");
+        // dialogue("Ford: \"Didn't you say you were trained under the king's knights?\"");
+        // dialogue("You: \"Yes, I was. Why?\"");
+        // dialogue("Ford: \"Then maybe you can handle this. They say" + RED + " Dima's dungeon" + RESET + " has risen again.\"");
+        // dialogue("You: \"" + RED + "Dima's dungeon?" + RESET + " Never heard of it.\"");
+        // dialogue("Ford: \"It's no ordinary place... Long ago, there was a warlord named Dima. Cruel, bloodthirsty—he carved his fortress deep beneath the earth. When the king's army finally brought him down, the ground swallowed the fortress whole.\"");
+        // dialogue("You: \"And now it's... back?\"");
+        // dialogue("Ford: \"Aye. Every few generations, the dungeon claws its way to the surface. Each time it does, plague and monsters spill from it, and villages vanish overnight.\"");
+        // dialogue("You: \"...And you expect me to walk into that hell alone?\"");
+        // dialogue("Ford: \"I wouldn't ask, but we've got no choice. If someone doesn't enter soon, the whole valley is finished.\"");
+        // dialogue("You: \"...Then I'll go, Ford. I'll see this dungeon with my own eyes.\"");
+        // dialogue("Ford: \"Thank the gods. Just be careful... Dima is still down there waiting....\"");
+        // dialogue("You: \"If that's true, he'll regret waiting for me.\"");
 
         inTown = true;
         inTavern = true;
 
         //tut before freedom XD
-        System.out.println("\nYou get out of bed and head down the tavern's stairs. Type 'C' to list the people around you.");
+        System.out.println(BLUE + "\nYou get out of bed and head down the tavern's stairs. Type 'C' to list the people around you." + RESET);
         input = scan.nextLine();
         if(input.equalsIgnoreCase("c"))
         {
             see();
         }
-        System.out.println("\nType 'M' to see your map");
+        System.out.println(BLUE + "\nType 'M' to see your map" + RESET);
         input = scan.nextLine();
         if(input.equalsIgnoreCase("m"))
         {
             map();
-            System.out.println("\nTip! when the letter is lowercase that means your on that tile\nif you go on the grass or '.' then your 'P' marker will apear.");
+            System.out.println(BLUE + "\nTip! when the letter is lowercase that means your on that tile\nif you go on the grass or '.' then your 'P' marker will apear." + RESET);
         }
-        System.out.println("\nType 'ls' to list out everything you can do");
+        System.out.println(BLUE + "\nType 'ls' to list out everything you can do" + RESET);
         input = scan.nextLine();
         if(input.equalsIgnoreCase("ls"))
         {
             ls();
-            System.out.println("\n\nLet's pick out your name: (enter your name)");
+            System.out.println(BLUE + "\n\nLet's pick out your name: (enter your name)" + RESET);
             input = scan.nextLine();
             player.setName(input);
-            System.out.println(player.Name + ", may the gods be with you...");
+            System.out.println(BLUE + player.Name + ", may the gods be with you..." + RESET);
         }
 
-        System.out.println("\nType 'R' when your ready to start (:");
+        System.out.println(BLUE + "\nType 'R' when your ready to start (:" + RESET);
         input = scan.nextLine();
         if(input.equalsIgnoreCase("r"))
         {
@@ -176,7 +220,7 @@ public class GamePlay {
         }
     }
 
-    public void Update()
+    public void Update() throws InterruptedException
     {
         Scanner scan = new Scanner(System.in);
         String input;
@@ -188,13 +232,27 @@ public class GamePlay {
         }
     }
 
-    public void Handlecmd(String cmd)
+    public void Handlecmd(String cmd) throws InterruptedException
     {
         if(inTavern)
         {
             if(cmd.equalsIgnoreCase("sleep"))
             {
-                
+                float bonus = player.MaxHP * 0.6f;
+                player.setHP(player.HP + bonus);
+                clearScreen();
+                dialogue("You: \".....\"");
+                System.out.println();
+            }
+
+            if(cmd.equalsIgnoreCase("menu"))
+            {
+                menu();
+            }
+
+            if(inMenu)
+            {
+
             }
         }
 
@@ -209,6 +267,10 @@ public class GamePlay {
         else if(cmd.equalsIgnoreCase("c"))
         {
             see();
+        }
+        else if(cmd.equalsIgnoreCase("inv"))
+        {
+            inventory();
         }
     }
 }

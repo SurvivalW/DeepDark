@@ -1,7 +1,7 @@
 public class Player {
     public String Name;
-    public int HP;
-    public int MaxHP;
+    public float HP;
+    public float MaxHP;
     public int Money;
 
     public Player(String Name)
@@ -10,7 +10,7 @@ public class Player {
     }
 
 
-    public void setHP(int HP)
+    public void setHP(float HP)
     {
         if(HP <= MaxHP)
         {
@@ -18,14 +18,18 @@ public class Player {
         }
     }
 
+    public void setMaxHP(float MaxHP)
+    {
+        this.MaxHP = MaxHP;
+    }
 
     public void setName(String Name)
     {
         this.Name = Name;
     }
 
-    public String getName()
+    public void setMoney(int newMoney)
     {
-        return Name;
+        Money = newMoney;
     }
 }
