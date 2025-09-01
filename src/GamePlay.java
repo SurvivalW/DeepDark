@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GamePlay {
+    public static boolean running; 
+
     //initialize
     public static ArrayList<NPC> NPCs = new ArrayList<NPC>();
 
@@ -19,6 +21,9 @@ public class GamePlay {
 
     //NPC's
     public static boolean charWilliamUnlock;
+
+    //Player
+    public static String Name;
 
 
     /**
@@ -49,7 +54,7 @@ public class GamePlay {
     }
 
 
-    public static void Map()
+    public static void map()
     {
         clearScreen();
         if (inTown)
@@ -88,6 +93,17 @@ public class GamePlay {
         }
     }
 
+    public void ls()
+    {
+        clearScreen();
+        //basic stuff
+        System.out.println("Basic:\nm - map\nc - see\nls - cmd's");
+        if(inTavern)//tavern only
+        {
+            System.out.println("Tavern:\nsleep - get a room for the night(HP+70%) ¥45\nmenu - see the food menu");
+        }
+    }
+
 
     public void start() throws InterruptedException
     {
@@ -95,7 +111,6 @@ public class GamePlay {
         NPCs.add(Ford);
 
         Scanner scan = new Scanner(System.in);
-
         String input;
 
         String red = "\u001b[31m";
@@ -125,9 +140,9 @@ public class GamePlay {
         inTavern = true;
 
         //tut before freedom XD
-        System.out.println("\nYou get out of bed and head down the tavern's stairs. Type 'S' to list the people around you.");
+        System.out.println("\nYou get out of bed and head down the tavern's stairs. Type 'C' to list the people around you.");
         input = scan.nextLine();
-        if(input.equalsIgnoreCase("s"))
+        if(input.equalsIgnoreCase("c"))
         {
             see();
         }
@@ -135,8 +150,46 @@ public class GamePlay {
         input = scan.nextLine();
         if(input.equalsIgnoreCase("m"))
         {
-            Map();
+            map();
             System.out.println("\nTip! when the letter is lowercase that means your on that tile\nif you go on the grass or '.' then your 'P' marker will apear.");
+        }
+        System.out.println("\nType 'ls' to list out everything you can do");
+        input = scan.nextLine();
+        if(input.equalsIgnoreCase("ls"))
+        {
+            ls();
+            System.out.println("\n\nLet's pick out your name: (enter your name)");
+            input = scan.nextLine();
+            Name = input;
+            System.out.println(Name + ", may the gods be with you...");
+        }
+
+        System.out.println("\nType 'R' when your ready to start (:");
+        input = scan.nextLine();
+        if(input.equalsIgnoreCase("r"))
+        {
+            clearScreen();
+            Update();
+        }
+    }
+
+    public void Update()
+    {
+        Scanner scan = new Scanner(System.in);
+        String input;
+        running = true;
+        while(running)
+        {
+            input = scan.nextLine();
+            Handlecmd(input);
+        }
+    }
+
+    public void Handlecmd(String cmd)
+    {
+        if(cmd.equalsIgnoreCase("ls"))
+        {
+            ls();
         }
     }
 }
