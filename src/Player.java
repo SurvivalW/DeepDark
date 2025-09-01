@@ -1,8 +1,15 @@
+import java.util.ArrayList;
+import Items.Item;
+
 public class Player {
     public String Name;
     public float HP;
     public float MaxHP;
+    public float Mana;
+    public float MaxMana;
     public int Money;
+
+    public ArrayList<Item> inventory = new ArrayList<Item>();
 
     public Player(String Name)
     {
@@ -10,17 +17,30 @@ public class Player {
     }
 
 
-    public void setHP(float HP)
+    public void setHP(float newHP)
     {
-        if(HP <= MaxHP)
+        if(newHP <= MaxHP)
         {
-            this.HP = HP;
+            this.HP = newHP;
         }
     }
 
     public void setMaxHP(float MaxHP)
     {
         this.MaxHP = MaxHP;
+    }
+
+    public void setMana(float newMana)
+    {
+        if(newMana <= MaxMana)
+        {
+            this.Mana = newMana;
+        }
+    }
+
+    public void setMaxMana(float MaxMana)
+    {
+        this.MaxMana = MaxMana;
     }
 
     public void setName(String Name)

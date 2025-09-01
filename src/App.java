@@ -9,6 +9,10 @@ public class App {
     {
         Scanner input = new Scanner(System.in);
 
+        //clear the screen
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         System.out.println("Hello Welcome to Deep Dark, To get started Choose a save or start fresh.");
         System.out.println("Type \"1\" for first save.");
         System.out.println("Type \"2\" for second save.");

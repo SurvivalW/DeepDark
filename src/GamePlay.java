@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Items.Food;
+import Items.Item;
+import maps.Town;
+
 public class GamePlay {
     public static boolean running; 
 
@@ -85,7 +89,7 @@ public class GamePlay {
         {
             //base
             clearScreen();
-            System.out.println(GREEN + "\nTavern" + RESET);
+            System.out.println(GREEN + "\nTavern       *TIP* enter there name to talk to them" + RESET);
             System.out.println("-------------------");
             System.out.println(BLUE + "Name---Relationship\n" + RESET);
 
@@ -111,7 +115,7 @@ public class GamePlay {
         System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\ninv - inventory\nls - cmd's" + RESET);
         if(inTavern)//tavern only
         {
-            System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night(" + RED + "HP+60%" + RESET + ")" + YELLOW + "¥45" + RESET + "\nmenu - see the food menu" + RESET);
+            System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night" + RESET + "(" + RED + "Mana+15% HP+10%" + RESET + ")" + YELLOW + "¥35" + BLUE + "\nmenu - see the food menu" + RESET);
         }
     }
 
@@ -119,9 +123,26 @@ public class GamePlay {
     {
         clearScreen();
         System.out.println(YELLOW + "¥" + player.Money + RESET);
-        System.out.println(RED + player.HP + "/" + player.MaxHP + RESET);
+        System.out.println(RED + "HP: " + player.HP + "/" + player.MaxHP + RESET);
+        System.out.println(RED + "Mana: " + player.Mana + "/" + player.MaxMana + RESET);
         System.out.println("-----------------");
 
+        for(int i = 0; i < player.inventory.size(); i++)
+        {
+            int printNum = i + 1;
+            System.out.println(printNum + ":" + player.inventory.get(i).itemName + " |lvl: " + player.inventory.get(i).lvl);
+        }
+    }
+
+    public void sleep() throws InterruptedException
+    {
+        float bonusHP = player.MaxHP * 0.1f;
+        float bonusMana = player.MaxMana * 0.15f;
+        player.setHP(player.HP + bonusHP);
+        player.setMana(player.Mana + bonusMana);
+        clearScreen();
+        dialogue("You: \".....\"");
+        System.out.println(RED + "Mana: " + player.Mana + "/" + player.MaxMana + "  -  "  + player.HP + "/" + player.MaxHP + RESET);
     }
 
     public void menu()
@@ -131,7 +152,7 @@ public class GamePlay {
 
         clearScreen();
         System.out.println("------------------");
-        System.out.println("'1':Steak & Potatoes " + YELLOW + "¥10");
+        System.out.println("'1':" + BLUE + "Steak & Potatoes" + RESET + "(" + RED + "7+HP" + RESET + ")" + YELLOW + "¥10");
 
         System.out.println("'back': go back");
 
@@ -141,11 +162,17 @@ public class GamePlay {
             if(input.equalsIgnoreCase("1"))
             {
                 player.setMoney(player.Money - 10);
+                player.inventory.add(new Food("Steak & Potatoes", 7, 10, 1));
+                System.out.println(RED + "+Steak & Potatoes" + RESET);
             }
             else if(input.equalsIgnoreCase("back"))
             {
                 clearScreen();
                 return;
+            }
+            else
+            {
+                System.out.println(BLUE + "Please enter a valid command" + RESET);
             }
         }
     }
@@ -157,6 +184,12 @@ public class GamePlay {
     {
         //add ford right quick...
         NPCs.add(Ford);
+
+        player.setMoney(53);//start money
+        player.setMaxMana(20);//start mana
+        player.setMana(20);
+        player.setMaxHP(15);
+        player.setHP(15);
 
         Scanner scan = new Scanner(System.in);
         String input;
@@ -284,21 +317,20 @@ public class GamePlay {
         {
             if(cmd.equalsIgnoreCase("sleep"))
             {
-                float bonus = player.MaxHP * 0.6f;
-                player.setHP(player.HP + bonus);
-                clearScreen();
-                dialogue("You: \".....\"");
-                System.out.println();
+                if(player.Money >= 35)
+                {
+                    player.Money -= 35;
+                    sleep();
+                }
+                else
+                {
+                    System.out.println(BLUE + "Not enough ¥" + RESET);
+                }
             }
 
             if(cmd.equalsIgnoreCase("menu"))
             {
                 menu();
-            }
-
-            if(inMenu)
-            {
-
             }
         }
 
