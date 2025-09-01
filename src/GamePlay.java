@@ -108,7 +108,7 @@ public class GamePlay {
     {
         clearScreen();
         //basic stuff
-        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\nls - cmd's" + RESET);
+        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\ninv - inventory\nls - cmd's" + RESET);
         if(inTavern)//tavern only
         {
             System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night(" + RED + "HP+60%" + RESET + ")" + YELLOW + "¥45" + RESET + "\nmenu - see the food menu" + RESET);
@@ -153,7 +153,7 @@ public class GamePlay {
 
 
 
-    public void start() throws InterruptedException
+    public void tutorial() throws InterruptedException
     {
         //add ford right quick...
         NPCs.add(Ford);
@@ -187,36 +187,82 @@ public class GamePlay {
 
         //tut before freedom XD
         System.out.println(BLUE + "\nYou get out of bed and head down the tavern's stairs. Type 'C' to list the people around you." + RESET);
-        input = scan.nextLine();
-        if(input.equalsIgnoreCase("c"))
+        while(true)
         {
-            see();
+            input = scan.nextLine();
+            if(input.equalsIgnoreCase("c"))
+            {
+                see();
+                break;
+            }
+            else
+            {
+                System.out.println(BLUE + "Type 'C'" + RESET);
+            }
         }
         System.out.println(BLUE + "\nType 'M' to see your map" + RESET);
-        input = scan.nextLine();
-        if(input.equalsIgnoreCase("m"))
+        while(true)
         {
-            map();
-            System.out.println(BLUE + "\nTip! when the letter is lowercase that means your on that tile\nif you go on the grass or '.' then your 'P' marker will apear." + RESET);
+            input = scan.nextLine();
+            if(input.equalsIgnoreCase("m"))
+            {
+                map();
+                System.out.println(BLUE + "\nTip! when the letter is lowercase that means your on that tile\nif you go on the grass or '.' then your 'P' marker will apear." + RESET);
+                break;
+            }
+            else
+            {
+                System.out.println(BLUE + "Type 'M'" + RESET);
+            }
+        }
+        System.out.println(BLUE + "\nType 'inv' to see your inventory, HP and how much ¥ you have." + RESET);
+        while(true)
+        {
+            input = scan.nextLine();
+            if(input.equalsIgnoreCase("inv"))
+            {
+                inventory();
+                break;
+            }
+            else
+            {
+                System.out.println(BLUE + "Type inv" + RESET);
+            }
         }
         System.out.println(BLUE + "\nType 'ls' to list out everything you can do" + RESET);
-        input = scan.nextLine();
-        if(input.equalsIgnoreCase("ls"))
+        while(true)
         {
-            ls();
-            System.out.println(BLUE + "\n\nLet's pick out your name: (enter your name)" + RESET);
             input = scan.nextLine();
-            player.setName(input);
-            System.out.println(BLUE + player.Name + ", may the gods be with you..." + RESET);
+            if(input.equalsIgnoreCase("ls"))
+            {
+                ls();
+                break;
+            }
+            else
+            {
+                System.out.println(BLUE + "Type 'ls'" + RESET);
+            }
         }
 
-        System.out.println(BLUE + "\nType 'R' when your ready to start (:" + RESET);
+        System.out.println(BLUE + "\n\nLet's pick out your name: (enter your name)" + RESET);
         input = scan.nextLine();
-        if(input.equalsIgnoreCase("r"))
+        player.setName(input);
+        System.out.println(BLUE + player.Name + ", may the gods be with you..." + RESET);
+
+        while(true)
         {
-            doneTut = true;
-            clearScreen();
-            Update();
+            System.out.println(BLUE + "\nType 'R' when your ready to start (:" + RESET);
+            input = scan.nextLine();
+            if(input.equalsIgnoreCase("r"))
+            {
+                doneTut = true;
+                clearScreen();
+                Update();
+            }
+            else
+            {
+                System.out.println(BLUE + "Type 'r'" + RESET);
+            }
         }
     }
 

@@ -49,7 +49,7 @@ public class App {
             if(userString.equalsIgnoreCase("start"))
             {
                 GamePlay fresh = new GamePlay();
-                fresh.start();
+                fresh.tutorial();
             }
         }
     }
