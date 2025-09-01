@@ -19,11 +19,13 @@ public class GamePlay {
 
     public static boolean inDungeon;//MAIN
 
+    public static boolean doneTut = false;
+
     //NPC's
     public static boolean charWilliamUnlock;
 
     //Player
-    public static String Name;
+    Player player = new Player(null);
 
 
     /**
@@ -160,14 +162,15 @@ public class GamePlay {
             ls();
             System.out.println("\n\nLet's pick out your name: (enter your name)");
             input = scan.nextLine();
-            Name = input;
-            System.out.println(Name + ", may the gods be with you...");
+            player.setName(input);
+            System.out.println(player.Name + ", may the gods be with you...");
         }
 
         System.out.println("\nType 'R' when your ready to start (:");
         input = scan.nextLine();
         if(input.equalsIgnoreCase("r"))
         {
+            doneTut = true;
             clearScreen();
             Update();
         }
@@ -187,9 +190,25 @@ public class GamePlay {
 
     public void Handlecmd(String cmd)
     {
+        if(inTavern)
+        {
+            if(cmd.equalsIgnoreCase("sleep"))
+            {
+                
+            }
+        }
+
         if(cmd.equalsIgnoreCase("ls"))
         {
             ls();
+        }
+        else if(cmd.equalsIgnoreCase("m"))
+        {
+            map();
+        }
+        else if(cmd.equalsIgnoreCase("c"))
+        {
+            see();
         }
     }
 }
