@@ -103,23 +103,23 @@ public class GamePlay {
 
 
         clearScreen();
-        // dialogue("*BOOOM*");
-        // dialogue("Ford: \"..hey...Hey, traveler, wake up!\"");
-        // dialogue("You: \"...wha—?\"");
-        // dialogue("Ford: \"Did you feel that shake? The whole tavern rattled... it can only mean one thing.\"");
-        // dialogue("You: \"...still half asleep here, Ford. What's going on?\"");
-        // dialogue("Ford: \"Didn't you say you were trained under the king's knights?\"");
-        // dialogue("You: \"Yes, I was. Why?\"");
-        // dialogue("Ford: \"Then maybe you can handle this. They say" + red + " Dima's dungeon" + reset + " has risen again.\"");
-        // dialogue("You: \"" + red + "Dima's dungeon?" + reset + " Never heard of it.\"");
-        // dialogue("Ford: \"It's no ordinary place... Long ago, there was a warlord named Dima. Cruel, bloodthirsty—he carved his fortress deep beneath the earth. When the king's army finally brought him down, the ground swallowed the fortress whole.\"");
-        // dialogue("You: \"And now it's... back?\"");
-        // dialogue("Ford: \"Aye. Every few generations, the dungeon claws its way to the surface. Each time it does, plague and monsters spill from it, and villages vanish overnight.\"");
-        // dialogue("You: \"...And you expect me to walk into that hell alone?\"");
-        // dialogue("Ford: \"I wouldn't ask, but we've got no choice. If someone doesn't enter soon, the whole valley is finished.\"");
-        // dialogue("You: \"...Then I'll go, Ford. I'll see this dungeon with my own eyes.\"");
-        // dialogue("Ford: \"Thank the gods. Just be careful... Dima is still down there waiting....\"");
-        // dialogue("You: \"If that's true, he'll regret waiting for me.\"");
+        dialogue("*BOOOM*");
+        dialogue("Ford: \"..hey...Hey, traveler, wake up!\"");
+        dialogue("You: \"...wha—?\"");
+        dialogue("Ford: \"Did you feel that shake? The whole tavern rattled... it can only mean one thing.\"");
+        dialogue("You: \"...still half asleep here, Ford. What's going on?\"");
+        dialogue("Ford: \"Didn't you say you were trained under the king's knights?\"");
+        dialogue("You: \"Yes, I was. Why?\"");
+        dialogue("Ford: \"Then maybe you can handle this. They say" + red + " Dima's dungeon" + reset + " has risen again.\"");
+        dialogue("You: \"" + red + "Dima's dungeon?" + reset + " Never heard of it.\"");
+        dialogue("Ford: \"It's no ordinary place... Long ago, there was a warlord named Dima. Cruel, bloodthirsty—he carved his fortress deep beneath the earth. When the king's army finally brought him down, the ground swallowed the fortress whole.\"");
+        dialogue("You: \"And now it's... back?\"");
+        dialogue("Ford: \"Aye. Every few generations, the dungeon claws its way to the surface. Each time it does, plague and monsters spill from it, and villages vanish overnight.\"");
+        dialogue("You: \"...And you expect me to walk into that hell alone?\"");
+        dialogue("Ford: \"I wouldn't ask, but we've got no choice. If someone doesn't enter soon, the whole valley is finished.\"");
+        dialogue("You: \"...Then I'll go, Ford. I'll see this dungeon with my own eyes.\"");
+        dialogue("Ford: \"Thank the gods. Just be careful... Dima is still down there waiting....\"");
+        dialogue("You: \"If that's true, he'll regret waiting for me.\"");
 
         inTown = true;
         inTavern = true;
