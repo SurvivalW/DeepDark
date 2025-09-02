@@ -1,10 +1,20 @@
 package Global;
 public class GloabalStates {
-    //Game state vars
-    public static boolean inTown;//MAIN
-    public static boolean outside;//child to town
-    public static boolean inTavern;//child to town
-    public static boolean inWeaponShop;//child to town
+    public static boolean inDungeon;
+    public static boolean inTown;
 
-    public static boolean inDungeon;//MAIN
+    //Quests
+    public static boolean firstswordDONE = false;
+    public static boolean firstswordSTORE = false;
+    public static boolean enteredDungeon = false;
+
+    //enum for game states
+    public static enum GameState {
+        OUTSIDE,
+        IN_TAVERN,
+        IN_WEAPON_SHOP
+    }
+
+    //current game state
+    public static GameState currentState;
 }

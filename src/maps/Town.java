@@ -1,5 +1,6 @@
 package maps;
 import Global.GloabalStates;
+import Global.GloabalStates.GameState;
 import Humanoids.Player;
 
 public class Town {
@@ -132,60 +133,37 @@ public class Town {
             }
         }
 
+        //cap positions so they stay within 0–24
+        if(player.xPos < 0) player.xPos = 0;
+        if(player.xPos > 24) player.xPos = 24;
+
+        if(player.yPos < 0) player.yPos = 0;
+        if(player.yPos > 24) player.yPos = 24;
+
         if(map[player.yPos][player.xPos] == "T")
         {
             map[player.yPos][player.xPos] = "t";
-            GloabalStates.inTavern = true;
+            GloabalStates.currentState = GameState.IN_TAVERN;
         }
         else if(map[player.yPos][player.xPos] == "W")
         {
             map[player.yPos][player.xPos] = "w";
-            GloabalStates.inWeaponShop = true;
+            GloabalStates.currentState = GameState.IN_WEAPON_SHOP;
         }
         else if(map[player.yPos][player.xPos] == ".")
         {
             map[player.yPos][player.xPos] = "P";
-            GloabalStates.outside = true;
+            GloabalStates.currentState = GameState.OUTSIDE;
         }
         else if(map[player.yPos][player.xPos] == "R")
         {
             map[player.yPos][player.xPos] = "r";
-            GloabalStates.outside = true;
+            GloabalStates.currentState = GameState.OUTSIDE;
         }
         else if(map[player.yPos][player.xPos] == "B")
         {
             map[player.yPos][player.xPos] = "b";
-            GloabalStates.outside = true;
-        }
-
-
-        if(GloabalStates.outside)
-        {
-            GloabalStates.inDungeon = false;
-            GloabalStates.inTavern = false;
-            GloabalStates.inWeaponShop = false;
-            GloabalStates.inTown = true;
-        }
-        else if(GloabalStates.inTavern)
-        {
-            GloabalStates.inDungeon = false;
-            GloabalStates.outside = false;
-            GloabalStates.inWeaponShop = false;
-            GloabalStates.inTown = true;
-        }
-        else if(GloabalStates.inDungeon)
-        {
-            GloabalStates.inTavern = false;
-            GloabalStates.outside = false;
-            GloabalStates.inWeaponShop = false;
-            GloabalStates.inTown = false;
-        }
-        else if(GloabalStates.inWeaponShop)
-        {
-            GloabalStates.inDungeon = false;
-            GloabalStates.outside = false;
-            GloabalStates.inTavern = false;
-            GloabalStates.inTown = true;
+            GloabalStates.currentState = GameState.OUTSIDE;
         }
     }
 }

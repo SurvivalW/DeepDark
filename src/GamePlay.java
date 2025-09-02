@@ -6,6 +6,7 @@ import Items.Food;
 import Items.Item;
 import maps.Town;
 import Global.GloabalStates;
+import Global.GloabalStates.GameState;
 
 public class GamePlay {
     public static boolean running; 
@@ -72,14 +73,17 @@ public class GamePlay {
         }
     }
 
-    public static void see()
+    public static void see() throws InterruptedException
     {
+        Scanner scan = new Scanner(System.in);
+        String input;
+
         ArrayList<NPC> npcShown = new ArrayList<NPC>();
-        if (GloabalStates.inTavern)
+        if (GloabalStates.currentState == GameState.IN_TAVERN)
         {
             //base
             clearScreen();
-            System.out.println(GREEN + "\nTavern       *TIP* enter there name to talk to them" + RESET);
+            System.out.println(GREEN + "\nTavern       *enter there name to talk to them*" + RESET);
             System.out.println("-------------------");
             System.out.println(BLUE + "Name---Relationship\n" + RESET);
 
@@ -96,6 +100,43 @@ public class GamePlay {
                 System.out.println(npc.name + "   -  " + npc.relationship);
             }
         }
+        System.out.println(BLUE + "\n'back': go back" + RESET);
+
+        while(true)
+        {
+            input = scan.nextLine();
+
+            if(input.equalsIgnoreCase("ford"))
+            {
+                if(GloabalStates.firstswordDONE == false && GloabalStates.firstswordSTORE == false)
+                {
+                    dialogue("Ford: \"Ahoy! I see you you don't have a sword, here I'll give you my old sword from back in my day...\" *SHING*");
+                    dialogue(RED + "+lvl-1 Sword" + RESET);
+                    dialogue("You: \"Oh! thank you Ford that's very kind of you.\"");
+                    dialogue("Ford: \"Don't sweat it!\"");
+                    GloabalStates.firstswordDONE = true;
+                    player.
+                }
+                else if(GloabalStates.firstswordSTORE == true && GloabalStates.enteredDungeon == false)
+                {
+                    dialogue("Ford: \"Ahoy! I see you already got a sword, well better get the dungeon!\"");
+                    dialogue("You: \"....\"");
+                }
+                else//normal reply
+                {
+                    dialogue("Ford: \"Ahoy! I don't have a lot to talk about right now.\"");
+                }
+            }
+            else if(input.equalsIgnoreCase("back"))
+            {
+                clearScreen();
+                break;
+            }
+            else
+            {
+                System.out.println(BLUE + "Please enter a valid command" + RESET);
+            }
+        }
     }
 
     public void ls()
@@ -103,10 +144,14 @@ public class GamePlay {
         clearScreen();
         //basic stuff
         System.out.println(GREEN + "Movement: " + BLUE + "\nmovel - Move left\nmover - Move right\nmoveu - Move up\nmoved - Move down");
-        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\ninv - inventory\nls - cmd's");
-        if(GloabalStates.inTavern)//tavern only
+        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\ninv - inventory\nls - cmd's" + RESET);
+        if(GloabalStates.currentState == GameState.IN_TAVERN)//tavern only
         {
-            System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night" + RESET + "(" + RED + "Mana+15% HP+10%" + RESET + ")" + YELLOW + "¥35" + BLUE + "\nmenu - see the food menu" + RESET);
+            System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night" + RESET + "(" + RED + "Mana+15% HP+10%" + RESET + ")" + YELLOW + " ¥35" + BLUE + "\nmenu - see the food menu" + RESET);
+        }
+        if(GloabalStates.currentState == GameState.IN_WEAPON_SHOP)//weapon shop only
+        {
+            System.out.println(GREEN + "\nWeapon shop:           *Type the number to buy.*" + BLUE + "\n1 - lvl-1 Sword" + RESET + "(" + RED + "DMG:3" + RESET + ")" + YELLOW + " ¥35" + RESET);
         }
     }
 
@@ -150,6 +195,10 @@ public class GamePlay {
         }
     }
 
+
+
+
+    //TAVERN
     public void sleep() throws InterruptedException
     {
         float bonusHP = player.MaxHP * 0.1f;
@@ -160,8 +209,7 @@ public class GamePlay {
         dialogue("You: \".....\"");
         System.out.println(RED + "Mana: " + player.Mana + "/" + player.MaxMana + "  -  "  + player.HP + "/" + player.MaxHP + RESET);
     }
-
-    public void menu()
+    public void menu() throws InterruptedException
     {
         Scanner scan = new Scanner(System.in);
         String input;
@@ -179,7 +227,7 @@ public class GamePlay {
             {
                 player.setMoney(player.Money - 10);
                 player.inventory.add(new Food("Steak & Potatoes", 7, 10, 1));
-                System.out.println(RED + "+Steak & Potatoes" + RESET);
+                dialogue(RED + "+Steak & Potatoes" + RESET);
             }
             else if(input.equalsIgnoreCase("back"))
             {
@@ -192,6 +240,7 @@ public class GamePlay {
             }
         }
     }
+
 
 
     public void tutorial() throws InterruptedException
@@ -232,7 +281,7 @@ public class GamePlay {
         // dialogue("You: \"If that's true, he'll regret waiting for me.\"");
 
         GloabalStates.inTown = true;
-        GloabalStates.inTavern = true;
+        GloabalStates.currentState = GameState.IN_TAVERN;
 
         //tut before freedom XD
         System.out.println(BLUE + "\nYou get out of bed and head down the tavern's stairs. Type 'C' to list the people around you." + RESET);
@@ -330,30 +379,38 @@ public class GamePlay {
 
     public void Handlecmd(String cmd) throws InterruptedException
     {
-        if(cmd.equalsIgnoreCase("movel"))
+        cmd = cmd.toLowerCase();
+
+        //MOVEMENT
+        if (cmd.startsWith("movel") || cmd.startsWith("mover") || cmd.startsWith("moveu") || cmd.startsWith("moved")) 
         {
-            player.movePlayer(player.xPos -= 1, player.yPos);
-            town.updatePlayer();
-        }
-        else if(cmd.equalsIgnoreCase("mover"))
-        {
-            player.movePlayer(player.xPos += 1, player.yPos);
-            town.updatePlayer();
-        }
-        else if(cmd.equalsIgnoreCase("moveu"))
-        {
-            player.movePlayer(player.xPos, player.yPos -= 1);
-            town.updatePlayer();
-        }
-        else if(cmd.equalsIgnoreCase("moved"))
-        {
-            player.movePlayer(player.xPos, player.yPos += 1);
+            char direction = cmd.charAt(4); // 'l', 'r', 'u', or 'd'
+            int amount = 1;
+
+            if (cmd.length() > 5)
+            {
+                try {
+                    amount = Integer.parseInt(cmd.substring(5));
+                } catch (NumberFormatException e) {
+                    //just use one
+                }
+            }   
+
+            switch (direction) {
+                case 'l' -> player.movePlayer(player.xPos - amount, player.yPos);
+                case 'r' -> player.movePlayer(player.xPos + amount, player.yPos);
+                case 'u' -> player.movePlayer(player.xPos, player.yPos - amount);
+                case 'd' -> player.movePlayer(player.xPos, player.yPos + amount);
+            }
+
             town.updatePlayer();
         }
 
-        if(GloabalStates.inTavern)
+
+        //TAVERN
+        if(GloabalStates.currentState == GameState.IN_TAVERN)
         {
-            if(cmd.equalsIgnoreCase("sleep"))
+            if(cmd.equals("sleep"))
             {
                 if(player.Money >= 35)
                 {
@@ -366,25 +423,34 @@ public class GamePlay {
                 }
             }
 
-            if(cmd.equalsIgnoreCase("menu"))
+            if(cmd.equals("menu"))
             {
                 menu();
             }
         }
 
-        if(cmd.equalsIgnoreCase("ls"))
+        //WEAPON STORE
+        if(GloabalStates.currentState == GameState.IN_WEAPON_SHOP)
+        {
+            
+        }
+
+
+
+        //BASIC
+        if(cmd.equals("ls"))
         {
             ls();
         }
-        else if(cmd.equalsIgnoreCase("m"))
+        else if(cmd.equals("m"))
         {
             map();
         }
-        else if(cmd.equalsIgnoreCase("c"))
+        else if(cmd.equals("c"))
         {
             see();
         }
-        else if(cmd.equalsIgnoreCase("inv"))
+        else if(cmd.equals("inv"))
         {
             inventory();
         }
