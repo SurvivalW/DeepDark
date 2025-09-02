@@ -1,34 +1,26 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import Humanoids.NPC;
+import Humanoids.Player;
 import Items.Food;
 import Items.Item;
 import maps.Town;
+import Global.GloabalStates;
 
 public class GamePlay {
     public static boolean running; 
 
     //initialize
+    Player player = new Player(null);
     public static ArrayList<NPC> NPCs = new ArrayList<NPC>();
 
-    public static Town town = new Town();
+    public Town town = new Town(player);
     public static NPC Ford = new NPC("Ford", "Tavern", "Acquaintance");
-
-    //Game state vars
-    public static boolean inTown;//MAIN
-    public static boolean outside;//child to town
-    public static boolean inTavern;//child to town
-    public static boolean inWeaponShop;//child to town
-
-    public static boolean inDungeon;//MAIN
 
     public static boolean doneTut = false;
 
     //NPC's
     public static boolean charWilliamUnlock;
-
-    //Player
-    Player player = new Player(null);
 
     //colors for terminal
     public static final String RESET = "\u001b[0m";
@@ -67,14 +59,14 @@ public class GamePlay {
 
 
     //CMDs
-    public static void map()
+    public void map()
     {
         clearScreen();
-        if (inTown)
+        if (GloabalStates.inTown)
         {
             town.showMap();
         }
-        if (inDungeon)
+        if (GloabalStates.inDungeon)
         {
 
         }
@@ -83,7 +75,7 @@ public class GamePlay {
     public static void see()
     {
         ArrayList<NPC> npcShown = new ArrayList<NPC>();
-        if (inTavern)
+        if (GloabalStates.inTavern)
         {
             //base
             clearScreen();
@@ -110,8 +102,9 @@ public class GamePlay {
     {
         clearScreen();
         //basic stuff
-        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\ninv - inventory\nls - cmd's" + RESET);
-        if(inTavern)//tavern only
+        System.out.println(GREEN + "Movement: " + BLUE + "\nmovel - Move left\nmover - Move right\nmoveu - Move up\nmoved - Move down");
+        System.out.println(GREEN + "Basic:" + BLUE + "\nm - map\nc - see\ninv - inventory\nls - cmd's");
+        if(GloabalStates.inTavern)//tavern only
         {
             System.out.println(GREEN + "\nTavern:" + BLUE + "\nsleep - get a room for the night" + RESET + "(" + RED + "Mana+15% HP+10%" + RESET + ")" + YELLOW + "¥35" + BLUE + "\nmenu - see the food menu" + RESET);
         }
@@ -203,6 +196,8 @@ public class GamePlay {
 
     public void tutorial() throws InterruptedException
     {
+        town.updatePlayer();
+
         //add ford right quick...
         NPCs.add(Ford);
 
@@ -236,8 +231,8 @@ public class GamePlay {
         // dialogue("Ford: \"Thank the gods. Just be careful... Dima is still down there waiting....\"");
         // dialogue("You: \"If that's true, he'll regret waiting for me.\"");
 
-        inTown = true;
-        inTavern = true;
+        GloabalStates.inTown = true;
+        GloabalStates.inTavern = true;
 
         //tut before freedom XD
         System.out.println(BLUE + "\nYou get out of bed and head down the tavern's stairs. Type 'C' to list the people around you." + RESET);
@@ -262,6 +257,7 @@ public class GamePlay {
             {
                 map();
                 System.out.println(BLUE + "\nTip! when the letter is lowercase that means your on that tile\nif you go on the grass or '.' then your 'P' marker will apear." + RESET);
+                System.out.println(BLUE + "One other thing, to move you enter \"movel\"-Move left|\"mover\"-Move right|\"moveu\"-Move up|\"moved\"-Move down" + RESET);
                 break;
             }
             else
@@ -334,7 +330,28 @@ public class GamePlay {
 
     public void Handlecmd(String cmd) throws InterruptedException
     {
-        if(inTavern)
+        if(cmd.equalsIgnoreCase("movel"))
+        {
+            player.movePlayer(player.xPos -= 1, player.yPos);
+            town.updatePlayer();
+        }
+        else if(cmd.equalsIgnoreCase("mover"))
+        {
+            player.movePlayer(player.xPos += 1, player.yPos);
+            town.updatePlayer();
+        }
+        else if(cmd.equalsIgnoreCase("moveu"))
+        {
+            player.movePlayer(player.xPos, player.yPos -= 1);
+            town.updatePlayer();
+        }
+        else if(cmd.equalsIgnoreCase("moved"))
+        {
+            player.movePlayer(player.xPos, player.yPos += 1);
+            town.updatePlayer();
+        }
+
+        if(GloabalStates.inTavern)
         {
             if(cmd.equalsIgnoreCase("sleep"))
             {

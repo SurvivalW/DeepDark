@@ -1,7 +1,8 @@
+package Humanoids;
 public class NPC {
-    String name;
-    String location;
-    String relationship;
+    public String name;
+    public String location;
+    public String relationship;
 
     public NPC(String name, String location, String relationship)
     {
@@ -10,7 +11,7 @@ public class NPC {
         this.relationship = relationship;
     }
 
-    public void updateRelashionship(String updatedRelationship)
+    public void updateRelationship(String updatedRelationship)
     {
         relationship = updatedRelationship;
     }
@@ -30,7 +31,7 @@ public class NPC {
         return location;
     }
 
-    public String getRelashionship()
+    public String getRelationship()
     {
         return relationship;
     }

@@ -1,9 +1,15 @@
 package maps;
+import Global.GloabalStates;
+import Humanoids.Player;
+
 public class Town {
     public static String[][] map;
+    public Player player;
 
-    public Town() 
+    public Town(Player player) 
     {
+        this.player = player;
+
         map = new String[25][25];
 
         //start empty
@@ -15,7 +21,7 @@ public class Town {
             }
         }
 
-        map[3][4] = "t";//tavern
+        map[3][4] = "T";//tavern
         map[5][10] = "W";//Weapon shop
 
         map[21][14] = "D";//dungeon entrance
@@ -85,12 +91,6 @@ public class Town {
         map[18][24] = "~";
     }
 
-
-    public void movePlayer()
-    {
-
-    }
-
     public void showMap()
     {
         for (int i = 0; i < 25; i++)
@@ -103,4 +103,89 @@ public class Town {
         }
     }
 
+    public void updatePlayer()//program note: yx
+    {
+        for (int i = 0; i < 25; i++) 
+        {
+            for (int j = 0; j < 25; j++) 
+            {
+                if(map[i][j] == "P")
+                {
+                    map[i][j] = ".";
+                }
+                else if(map[i][j] == "t")
+                {
+                    map[i][j] = "T";
+                }
+                else if(map[i][j] == "w")
+                {
+                    map[i][j] = "W";
+                }
+                else if(map[i][j] == "r")
+                {
+                    map[i][j] = "R";
+                }
+                else if(map[i][j] == "b")
+                {
+                    map[i][j] = "B";
+                }
+            }
+        }
+
+        if(map[player.yPos][player.xPos] == "T")
+        {
+            map[player.yPos][player.xPos] = "t";
+            GloabalStates.inTavern = true;
+        }
+        else if(map[player.yPos][player.xPos] == "W")
+        {
+            map[player.yPos][player.xPos] = "w";
+            GloabalStates.inWeaponShop = true;
+        }
+        else if(map[player.yPos][player.xPos] == ".")
+        {
+            map[player.yPos][player.xPos] = "P";
+            GloabalStates.outside = true;
+        }
+        else if(map[player.yPos][player.xPos] == "R")
+        {
+            map[player.yPos][player.xPos] = "r";
+            GloabalStates.outside = true;
+        }
+        else if(map[player.yPos][player.xPos] == "B")
+        {
+            map[player.yPos][player.xPos] = "b";
+            GloabalStates.outside = true;
+        }
+
+
+        if(GloabalStates.outside)
+        {
+            GloabalStates.inDungeon = false;
+            GloabalStates.inTavern = false;
+            GloabalStates.inWeaponShop = false;
+            GloabalStates.inTown = true;
+        }
+        else if(GloabalStates.inTavern)
+        {
+            GloabalStates.inDungeon = false;
+            GloabalStates.outside = false;
+            GloabalStates.inWeaponShop = false;
+            GloabalStates.inTown = true;
+        }
+        else if(GloabalStates.inDungeon)
+        {
+            GloabalStates.inTavern = false;
+            GloabalStates.outside = false;
+            GloabalStates.inWeaponShop = false;
+            GloabalStates.inTown = false;
+        }
+        else if(GloabalStates.inWeaponShop)
+        {
+            GloabalStates.inDungeon = false;
+            GloabalStates.outside = false;
+            GloabalStates.inTavern = false;
+            GloabalStates.inTown = true;
+        }
+    }
 }

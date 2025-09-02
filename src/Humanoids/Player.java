@@ -1,3 +1,4 @@
+package Humanoids;
 import java.util.ArrayList;
 import Items.Item;
 
@@ -8,6 +9,9 @@ public class Player {
     public float Mana;
     public float MaxMana;
     public int Money;
+
+    public int xPos = 4;
+    public int yPos = 3;
 
     public ArrayList<Item> inventory = new ArrayList<Item>();
 
@@ -51,5 +55,11 @@ public class Player {
     public void setMoney(int newMoney)
     {
         Money = newMoney;
+    }
+
+    public void movePlayer(int xPos, int yPos)
+    {
+        this.xPos = xPos;
+        this.yPos = yPos;
     }
 }
